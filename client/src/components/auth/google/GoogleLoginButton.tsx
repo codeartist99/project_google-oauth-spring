@@ -9,7 +9,8 @@ interface GoogleLoginButtonProps {
 export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onSuccess, onFailure }) => {
   return (
     <GoogleLogin
-      clientId="YOUR_GOOGLE_CLIENT_ID"
+      // clientId="YOUR_GOOGLE_CLIENT_ID"
+      clientId="taskflowmanager"
       buttonText="Login with Google"
       onSuccess={onSuccess}
       onFailure={onFailure}
