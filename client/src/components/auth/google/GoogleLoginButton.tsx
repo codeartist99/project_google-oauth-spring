@@ -1,20 +1,18 @@
 import React from 'react';
-import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import {useGoogleLogin} from "@react-oauth/google";
+import axios from "axios";
 
-interface GoogleLoginButtonProps {
-  onSuccess: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
-  onFailure: (error: any) => void;
-}
-
-export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onSuccess, onFailure }) => {
+export const GoogleLoginButton: React.FC = () => {
+  const login = useGoogleLogin({
+    onSuccess: codeResponse => {
+      axios.post("https://localhost:8080", codeResponse);
+      console.log(codeResponse)
+    },
+    flow: 'auth-code',
+  });
   return (
-    <GoogleLogin
-      // clientId="YOUR_GOOGLE_CLIENT_ID"
-      clientId="taskflowmanager"
-      buttonText="Login with Google"
-      onSuccess={onSuccess}
-      onFailure={onFailure}
-      cookiePolicy={'single_host_origin'}
-    />
+    <>
+      <button className={"btn"} onClick={login}>Google</button>
+    </>
   );
 };
