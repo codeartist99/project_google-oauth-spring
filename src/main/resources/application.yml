@@ -1,7 +1,6 @@
 spring:
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-
+  profiles:
+    active: secrets
   jpa:
     hibernate:
       ddl-auto: update

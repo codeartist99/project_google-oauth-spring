@@ -1,2 +1,5 @@
-package taskflowmanager.taskflowmanager;public class GoogleAuthContoller {
+package taskflowmanager.taskflowmanager;
+
+public class GoogleAuthContoller {
+
 }
