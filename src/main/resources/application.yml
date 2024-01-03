@@ -1,14 +1,12 @@
 spring:
-  profiles:
-    active: secrets
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+      naming-strategy: org.hibernate.cfg.ImprivedNamingStrategy
     properties:
       hibernate:
-        format_sql: true
-        show_sql: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+app:
+  cors:
+    allowedOrigins: http://localhost:3000, http://localhost:8080
