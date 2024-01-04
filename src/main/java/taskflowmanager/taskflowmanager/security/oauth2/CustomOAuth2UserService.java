@@ -1,4 +1,4 @@
 package taskflowmanager.taskflowmanager.security.oauth2;
 
-public class CustomOAuth2UserService {
+public interface CustomOAuth2UserService {
 }
