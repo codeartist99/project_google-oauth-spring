@@ -15,17 +15,9 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import taskflowmanager.taskflowmanager.security.CustomUserDetailsService;
 import taskflowmanager.taskflowmanager.security.RestAuthenticationEntryPoint;
@@ -106,14 +98,14 @@ public class SecurityConfig {
                                 authorizationEndpoint(authorizeEndpoint ->
                                         authorizeEndpoint
                                                 .baseUri("/oauth2/authorize")
-                                                .authorizationRequestRepository((AuthorizationRequestRepository<OAuth2AuthorizationRequest>) cookieAuthorizationRequestRepository()))
+                                                .authorizationRequestRepository(cookieAuthorizationRequestRepository()))
                                 .redirectionEndpoint(redirectEndpoint ->
                                         redirectEndpoint.baseUri("/oauth2/callback/*"))
                                 .userInfoEndpoint(userEndpoint ->
                                         userEndpoint
-                                                .userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) customOAuth2UserService))
-                                .successHandler((AuthenticationSuccessHandler) oAuth2AuthenticationSuccessHandler)
-                                .failureHandler((AuthenticationFailureHandler) oAuth2AuthenticationFailureHandler)
+                                                .userService(customOAuth2UserService))
+                                .successHandler(oAuth2AuthenticationSuccessHandler)
+                                .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
                 // Add our custom Token based authentication filter
                 .addFilterBefore((Filter) tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
