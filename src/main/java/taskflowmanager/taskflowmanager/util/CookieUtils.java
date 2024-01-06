@@ -1,12 +1,10 @@
 package taskflowmanager.taskflowmanager.util;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.util.SerializationUtils;
 
 import java.io.IOException;
@@ -58,10 +56,24 @@ public class CookieUtils {
     }
 
     public static <T> T deserialize(Cookie cookie, Class<T> cls) {
-        try {
-            return objectMapper.readValue(Base64.getUrlDecoder().decode(cookie.getValue()), cls);
-        } catch (IOException ex) {
-            throw new RuntimeException("Faild to deserialize cookie", ex);
-        }
+        return cls.cast(SerializationUtils.deserialize(
+                Base64.getUrlDecoder().decode(cookie.getValue())));
     }
+
+//    public static String serialize(Object object) {
+//        try {
+//            return Base64.getUrlEncoder()
+//                    .encodeToString(objectMapper.writeValueAsString(object).getBytes());
+//        } catch (JsonProcessingException ex) {
+//            throw new RuntimeException("Faild to serialize cookie", ex);
+//        }
+//    }
+//
+//    public static <T> T deserialize(Cookie cookie, Class<T> cls) {
+//        try {
+//            return objectMapper.readValue(new String(Base64.getUrlDecoder().decode(cookie.getValue())), cls);
+//        } catch (IOException ex) {
+//            throw new RuntimeException("Faild to deserialize cookie", ex);
+//        }
+//    }
 }

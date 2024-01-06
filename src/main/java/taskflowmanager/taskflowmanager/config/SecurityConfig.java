@@ -108,7 +108,7 @@ public class SecurityConfig {
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
                 // Add our custom Token based authentication filter
-                .addFilterBefore((Filter) tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
