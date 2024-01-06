@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @ConfigurationProperties(prefix = "app")
+@Getter
 public class AppProperties {
     private final Auth auth = new Auth();
     private final OAuth2 oAuth2 = new OAuth2();
@@ -17,13 +17,14 @@ public class AppProperties {
     @Setter
     public static class Auth {
         private String tokenSecret;
-        private long tekenExpirationMsec;
+        private long tokenExpirationMsec;
     }
 
     @Getter
     @Setter
     public static final class OAuth2 {
-        private List<String> autorizedRedirectionUris = new ArrayList<>();
+        private List<String> authorizedRedirectUris = new ArrayList<>();
+
     }
 
 
