@@ -1,6 +1,5 @@
 package taskflowmanager.taskflowmanager.config;
 
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import taskflowmanager.taskflowmanager.security.CustomUserDetailsService;
 import taskflowmanager.taskflowmanager.security.RestAuthenticationEntryPoint;
 import taskflowmanager.taskflowmanager.security.TokenAuthenticationFilter;
 import taskflowmanager.taskflowmanager.security.oauth2.CustomOAuth2UserService;
@@ -34,9 +32,6 @@ import taskflowmanager.taskflowmanager.security.oauth2.OAuth2AuthenticationSucce
         jsr250Enabled = true
 )
 public class SecurityConfig {
-
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
@@ -84,13 +79,13 @@ public class SecurityConfig {
                                 .requestMatchers("/",
                                         "/error",
                                         "/favicon.ico",
-                                        "/**/*.png",
-                                        "/**/*.gif",
-                                        "/**/*.svg",
-                                        "/**/*.jpg",
-                                        "/**/*.html",
-                                        "/**/*.css",
-                                        "/**/*.js").permitAll()
+                                        "/**.png",
+                                        "/**.gif",
+                                        "/**.svg",
+                                        "/**.jpg",
+                                        "/**.html",
+                                        "/**.css",
+                                        "/**.js").permitAll()
                                 .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
                 .oauth2Login(oauth2Login ->
@@ -100,7 +95,8 @@ public class SecurityConfig {
                                                 .baseUri("/oauth2/authorize")
                                                 .authorizationRequestRepository(cookieAuthorizationRequestRepository()))
                                 .redirectionEndpoint(redirectEndpoint ->
-                                        redirectEndpoint.baseUri("/oauth2/callback/*"))
+                                        redirectEndpoint
+                                                .baseUri("/oauth2/callback/*"))
                                 .userInfoEndpoint(userEndpoint ->
                                         userEndpoint
                                                 .userService(customOAuth2UserService))
