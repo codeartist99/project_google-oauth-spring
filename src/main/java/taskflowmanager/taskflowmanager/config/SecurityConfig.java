@@ -87,7 +87,7 @@ public class SecurityConfig {
                                         "/**.css",
                                         "/**.js").permitAll()
                                 .requestMatchers("/auth/**", "/oauth2/**").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
+                                .anyRequest().authenticated())
                 .oauth2Login(oauth2Login ->
                         oauth2Login.
                                 authorizationEndpoint(authorizeEndpoint ->
@@ -105,6 +105,7 @@ public class SecurityConfig {
                 )
                 // Add our custom Token based authentication filter
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

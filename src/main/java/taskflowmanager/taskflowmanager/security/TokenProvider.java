@@ -20,32 +20,48 @@ public class TokenProvider {
 
     private AppProperties appProperties;
 
+    private SecretKey secretKey;
+
     public TokenProvider(AppProperties appProperties) {
+        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getTokenSecret());
+        secretKey = Keys.hmacShaKeyFor(keyBytes);
+
         this.appProperties = appProperties;
     }
 
-    private SecretKey secretKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getTokenSecret());
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
+//        logger.info("userPrincipal: {}", userPrincipal);
+
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .subject(Long.toString(userPrincipal.getId()))
                 .issuedAt(new Date())
                 .expiration(expiryDate)
-                .signWith(secretKey())
+                .signWith(secretKey)
                 .compact();
+
+//        logger.info("token: {}", token);
+
+
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+//        logger.info("claims: {}", claims.toString());
+
+        return token;
     }
 
     public Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(secretKey())
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -54,10 +70,11 @@ public class TokenProvider {
 
     public boolean validationToken(String token) {
         try {
-            Jwts.parser()
-                    .verifyWith(secretKey())
+            Jws<Claims> temp = Jwts.parser()
+                    .verifyWith(secretKey)
                     .build()
                     .parseSignedClaims(token);
+            logger.info("temp: {}", temp.toString());
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");

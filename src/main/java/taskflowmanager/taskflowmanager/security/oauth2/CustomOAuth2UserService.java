@@ -1,6 +1,7 @@
 package taskflowmanager.taskflowmanager.security.oauth2;
 
 import io.micrometer.common.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +20,7 @@ import taskflowmanager.taskflowmanager.security.oauth2.user.OAuth2UserInfoFactor
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
@@ -27,6 +29,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
+//        log.info("oAuth2User: {}", oAuth2User.getAttributes());
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -48,6 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user;
         if (userOptional.isPresent()) {
             user = userOptional.get();
+//            log.info("user: {}", user);
             if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 throw new OAuth2AuthenticationProcessingExeption("Looks like you're  singed up wuth " +
                         user.getProvider() + " account. Please use your " + user.getProvider() +

@@ -1,5 +1,6 @@
 package taskflowmanager.taskflowmanager.security;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,8 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-@Setter
+@Data
 public class UserPrincipal implements OAuth2User, UserDetails{
     private Long id;
     private String email;
