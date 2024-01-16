@@ -3,7 +3,6 @@ package taskflowmanager.taskflowmanager.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,12 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import taskflowmanager.taskflowmanager.security.RestAuthenticationEntryPoint;
-import taskflowmanager.taskflowmanager.security.TokenAuthenticationFilter;
-import taskflowmanager.taskflowmanager.security.oauth2.CustomOAuth2UserService;
-import taskflowmanager.taskflowmanager.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import taskflowmanager.taskflowmanager.security.oauth2.OAuth2AuthenticationFailureHandler;
-import taskflowmanager.taskflowmanager.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import taskflowmanager.taskflowmanager.auth.security.TokenAuthenticationEntryPoint;
+import taskflowmanager.taskflowmanager.auth.security.TokenAuthenticationFilter;
+import taskflowmanager.taskflowmanager.auth.service.CustomOAuth2UserService;
+import taskflowmanager.taskflowmanager.auth.data.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import taskflowmanager.taskflowmanager.auth.security.OAuth2AuthenticationFailureHandler;
+import taskflowmanager.taskflowmanager.auth.security.OAuth2AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -73,7 +72,7 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
-                .exceptionHandling(authenticationManager -> authenticationManager.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
+                .exceptionHandling(authenticationManager -> authenticationManager.authenticationEntryPoint(new TokenAuthenticationEntryPoint()))
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/",
