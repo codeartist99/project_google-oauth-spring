@@ -5,7 +5,9 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <Header />
+      <div className={"w-full h-screen"} >
+        <Header />
+      </div>
     </>
   );
 };

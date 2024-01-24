@@ -1,13 +1,10 @@
-import React, {createContext, ReactNode, useState} from "react";
+import React, {createContext, ReactNode, useContext, useState} from "react";
+import LoginForm from "../component/LoginForm";
 
-interface User {
-  userName: string;
-}
 
 interface AuthContextProps {
   isLoggedIn: boolean;
-  user: User | null;
-  login: (userData: User) => void;
+  login: (loginForm: LoginForm) => void;
   logout: () => void;
 }
 
@@ -19,22 +16,19 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
 
-  const login = (userData: User) => {
+  const login = (loginForm: LoginForm) => {
     // 로그인 로직
+
     setIsLoggedIn(true);
-    setUser(userData);
   }
 
   const logout = () => {
     setIsLoggedIn(false);
-    setUser(null);
   }
 
   const contextValue: AuthContextProps = {
     isLoggedIn,
-    user,
     login,
     logout,
   };
@@ -45,5 +39,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     </AuthContext.Provider>
   );
 };
+
+
+const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
+export {AuthProvider, useAuth};
 
 
