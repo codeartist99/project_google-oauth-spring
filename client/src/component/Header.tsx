@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   return (
     <>
       <div className={"w-full"}>
-        {auth.isLoggedIn ?
+        {auth.accessToken ?
           <NavLink to={"/"} className={"btn"} onClick={handleLogout}>Logout</NavLink>
           :
           <>

@@ -1,17 +1,13 @@
+import Cookies from "js-cookie";
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import LoginRequestForm from "../component/user/login/LoginRequestForm";
 import SignupRequestForm from "../component/user/signup/SignupRequestForm";
-import {loginRequest, signupRequset} from "../util/RequestUtils";
-import {useNavigate} from "react-router-dom";
-
+import {signupRequset} from "../util/RequestUtils";
 
 interface AuthContextProps {
-  isLoggedIn: boolean;
-  updateAccessToken: (token: string | null) => void;
-  updateIsLoggedIn: (check: boolean) => void;
+  updateAccessToken: (token: string | undefined) => void;
   signup: (signupRequestForm: SignupRequestForm) => void;
   logout: () => void;
-  accessToken: string | null;
+  accessToken: string | null | undefined;
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -21,20 +17,20 @@ interface AuthContextProviderProps {
 }
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({children}) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | undefined>(Cookies.get('token'));
 
-  const updateAccessToken = (token: string | null) => {
-    setAccessToken(token);
-  }
-
-  const updateIsLoggedIn = (check: boolean) => {
-    setIsLoggedIn(check);
-  }
+  const updateAccessToken = (token: string | undefined) => {
+    if (token) {
+      setAccessToken(token);
+      Cookies.set('token', token, {expires: 7});
+    } else {
+      setAccessToken(undefined);
+    }
+  };
 
   const logout = () => {
-    setAccessToken(null);
-    setIsLoggedIn(false);
+    Cookies.remove('token');
+    setAccessToken(undefined);
     // "/"루트 페이지로 링크 이동 해야함
   }
 
@@ -48,9 +44,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({children}) => 
   }
 
   const contextValue: AuthContextProps = {
-    isLoggedIn,
     updateAccessToken,
-    updateIsLoggedIn,
     logout,
     accessToken,
     signup,

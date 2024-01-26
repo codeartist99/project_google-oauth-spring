@@ -1,10 +1,10 @@
-import {useState} from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
 import {useAuthContext} from "../../../context/AuthContext";
 import LoginRequestForm from "./LoginRequestForm";
 import {loginRequest} from "../../../util/RequestUtils";
+import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
+export const Login: React.FC = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
 
@@ -16,15 +16,12 @@ export const Login = () => {
     loginRequest(loginForm).then(res => {
       if (res.accessToken) {
         auth.updateAccessToken(res.accessToken);
-        auth.updateIsLoggedIn(true);
         navigate("/");
       } else {
-        auth.updateAccessToken(null);
-        auth.updateIsLoggedIn(false);
+        auth.updateAccessToken(undefined);
       }
     }).catch(err => {
-      auth.updateAccessToken(null);
-      auth.updateIsLoggedIn(false);
+      auth.updateAccessToken(undefined);
       throw new Error("로그인 실패");
     });
 
