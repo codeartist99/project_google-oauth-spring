@@ -8,13 +8,19 @@ import githubLogo from "../../../assets/images/github-logo.png";
 export const SocialLogin: React.FC = () => {
   return (
     <>
-      <div className="social-login">
-        <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-          <img src={googleLogo} alt="Google" /> Log in with Google</a>
-        <a className="btn btn-block social-btn facebook" href={FACEBOOK_AUTH_URL}>
-          <img src={fbLogo} alt="Facebook" /> Log in with Facebook</a>
-        <a className="btn btn-block social-btn github" href={GITHUB_AUTH_URL}>
-          <img src={githubLogo} alt="Github" /> Log in with Github</a>
+      <div className="w-full h-auto space-y-2 my-4">
+          <a className="flex justify-start btn w-full h-min" href={GOOGLE_AUTH_URL}>
+            <img className={"size-1/12"} src={googleLogo} alt="Google"/>
+            <p className={"ml-4"}>Log in with Google</p>
+          </a>
+          <a className="flex justify-start btn w-full h-min" href={FACEBOOK_AUTH_URL}>
+            <img className={"size-1/12"} src={fbLogo} alt="Facebook"/>
+            <p className={"ml-4"}>Log in with Facebook</p>
+            </a>
+          <a className="flex justify-start btn w-full h-min" href={GITHUB_AUTH_URL}>
+            <img className={"size-1/12"} src={githubLogo} alt="Github"/>
+            <p className={"ml-4"}>Log in with Github</p>
+          </a>
       </div>
     </>
   );
