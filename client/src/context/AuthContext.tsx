@@ -7,7 +7,7 @@ interface AuthContextProps {
   updateAccessToken: (token: string | undefined) => void;
   signup: (signupRequestForm: SignupRequestForm) => void;
   logout: () => void;
-  accessToken: string | null | undefined;
+  accessToken: string | undefined;
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);

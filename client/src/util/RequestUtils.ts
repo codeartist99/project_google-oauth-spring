@@ -1,5 +1,7 @@
 import { API_BASE_URL } from '../constants';
 import LoginRequestForm from "../component/user/login/LoginRequestForm";
+import {useAuthContext} from "../context/AuthContext";
+import Cookies from "js-cookie";
 
 
 export async function loginRequest(loginRequest: LoginRequestForm) {
@@ -35,6 +37,27 @@ export async function signupRequset(signupRequest: LoginRequestForm) {
   console.log(requestOptions);
 
   return await fetch(API_BASE_URL + "/auth/signup", requestOptions)
+    .then(response =>
+      response.json().then(json => {
+        if (!response.ok) {
+          return Promise.reject(json);
+        }
+        return json;
+      })
+    );
+}
+
+export async function getUserRequest(token: string) {
+
+  const requestOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    method: 'GET',
+  };
+
+  return await fetch(API_BASE_URL + "/user/me", requestOptions)
     .then(response =>
       response.json().then(json => {
         if (!response.ok) {

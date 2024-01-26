@@ -13,7 +13,10 @@ export const Header: React.FC = () => {
     <>
       <div className={"w-full"}>
         {auth.accessToken ?
-          <NavLink to={"/"} className={"btn"} onClick={handleLogout}>Logout</NavLink>
+          <>
+            <NavLink to={"/"} className={"btn"} onClick={handleLogout}>Logout</NavLink>
+            <NavLink to={"/profile"} className={"btn"}>Profile</NavLink>
+          </>
           :
           <>
             <NavLink to={"/login"} className={"btn"}>Login</NavLink>

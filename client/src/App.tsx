@@ -6,6 +6,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import { Signup } from './component/user/signup/Signup';
 import {Login} from "./component/user/login/Login";
 import { OAuth2RedirectHandler } from './component/user/login/OAuth2RedirectHandler';
+import {Profile} from "./component/user/profile/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path={"/"} element={<Home />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/signup"} element={<Signup />} />
+            <Route path={"/profile"} element={<Profile />} />
             <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
           </Routes>
         </BrowserRouter>
